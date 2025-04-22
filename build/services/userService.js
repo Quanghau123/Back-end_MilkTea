@@ -261,7 +261,8 @@ var createNewUser = function createNewUser(data) {
               UserPassword: hashPassword,
               Email: data.Email,
               Phone: data.Phone,
-              Role: data.Role || 'user'
+              Role: data.Role || 'user',
+              Address: data.Address
             });
           case 13:
             resolve({
@@ -313,38 +314,39 @@ var updateUserData = function updateUserData(data) {
           case 5:
             user = _context7.sent;
             if (!user) {
-              _context7.next = 15;
+              _context7.next = 16;
               break;
             }
             user.UserName = data.UserName;
             user.Email = data.Email;
             user.Phone = data.Phone;
-            _context7.next = 12;
+            user.Address = data.Address;
+            _context7.next = 13;
             return user.save();
-          case 12:
+          case 13:
             resolve({
               errCode: 0,
               message: "User updated successfully!"
             });
-            _context7.next = 16;
+            _context7.next = 17;
             break;
-          case 15:
+          case 16:
             resolve({
               errCode: 1,
               message: "User not found!"
             });
-          case 16:
-            _context7.next = 21;
+          case 17:
+            _context7.next = 22;
             break;
-          case 18:
-            _context7.prev = 18;
+          case 19:
+            _context7.prev = 19;
             _context7.t0 = _context7["catch"](0);
             reject(_context7.t0);
-          case 21:
+          case 22:
           case "end":
             return _context7.stop();
         }
-      }, _callee7, null, [[0, 18]]);
+      }, _callee7, null, [[0, 19]]);
     }));
     return function (_x12, _x13) {
       return _ref7.apply(this, arguments);

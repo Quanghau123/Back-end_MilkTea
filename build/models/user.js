@@ -29,6 +29,14 @@ module.exports = function (sequelize, DataTypes) {
           foreignKey: "UserId",
           onDelete: "CASCADE"
         });
+        User.hasMany(models.Review, {
+          foreignKey: "UserId",
+          onDelete: "CASCADE"
+        });
+        User.hasMany(models.Order, {
+          foreignKey: "UserId",
+          onDelete: "CASCADE"
+        });
       }
     }]);
   }(Model);
@@ -53,12 +61,17 @@ module.exports = function (sequelize, DataTypes) {
       unique: true
     },
     Phone: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
     },
     Role: {
       type: DataTypes.ENUM("admin", "user"),
       allowNull: false,
       defaultValue: 'user'
+    },
+    Address: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
     sequelize: sequelize,

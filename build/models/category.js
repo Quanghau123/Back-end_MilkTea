@@ -16,69 +16,41 @@ function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf 
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var Payment = /*#__PURE__*/function (_Model) {
-    function Payment() {
-      _classCallCheck(this, Payment);
-      return _callSuper(this, Payment, arguments);
+  var Category = /*#__PURE__*/function (_Model) {
+    function Category() {
+      _classCallCheck(this, Category);
+      return _callSuper(this, Category, arguments);
     }
-    _inherits(Payment, _Model);
-    return _createClass(Payment, null, [{
+    _inherits(Category, _Model);
+    return _createClass(Category, null, [{
       key: "associate",
       value: function associate(models) {
-        Payment.belongsTo(models.Order, {
-          foreignKey: "OrderId",
-          onDelete: 'SET NULL'
-        });
-        Payment.belongsTo(models.User, {
-          foreignKey: "UserId",
+        Category.hasMany(models.Product, {
+          foreignKey: 'CategoryId',
           onDelete: 'SET NULL'
         });
       }
     }]);
   }(Model);
-  Payment.init({
-    PaymentId: {
+  Category.init({
+    CategoryId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    OrderId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'Orders',
-        key: 'OrderId'
-      },
-      onDelete: 'CASCADE'
+    CategoryName: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'Users',
-        key: 'UserId'
-      },
-      onDelete: 'CASCADE'
-    },
-    PaymentMethod: {
+    ImageURL: {
       type: DataTypes.STRING
-    },
-    TransactionId: {
-      type: DataTypes.STRING
-    },
-    Amount: {
-      type: DataTypes.FLOAT
-    },
-    PaymentStatus: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
     }
   }, {
     sequelize: sequelize,
-    modelName: 'Payment',
-    tableName: 'Payments',
+    modelName: 'Category',
+    tableName: 'Categories',
     timestamps: true
   });
-  return Payment;
+  return Category;
 };

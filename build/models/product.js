@@ -16,69 +16,73 @@ function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf 
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var Payment = /*#__PURE__*/function (_Model) {
-    function Payment() {
-      _classCallCheck(this, Payment);
-      return _callSuper(this, Payment, arguments);
+  var Product = /*#__PURE__*/function (_Model) {
+    function Product() {
+      _classCallCheck(this, Product);
+      return _callSuper(this, Product, arguments);
     }
-    _inherits(Payment, _Model);
-    return _createClass(Payment, null, [{
+    _inherits(Product, _Model);
+    return _createClass(Product, null, [{
       key: "associate",
       value: function associate(models) {
-        Payment.belongsTo(models.Order, {
-          foreignKey: "OrderId",
+        Product.belongsTo(models.Category, {
+          foreignKey: 'CategoryId',
           onDelete: 'SET NULL'
         });
-        Payment.belongsTo(models.User, {
-          foreignKey: "UserId",
-          onDelete: 'SET NULL'
+        Product.hasMany(models.Review, {
+          foreignKey: "ProductId",
+          onDelete: "CASCADE"
+        });
+        Product.hasMany(models.Order, {
+          foreignKey: "ProductId",
+          onDelete: "CASCADE"
         });
       }
     }]);
   }(Model);
-  Payment.init({
-    PaymentId: {
+  Product.init({
+    ProductId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    OrderId: {
+    CategoryId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'Orders',
-        key: 'OrderId'
+        model: 'Categories',
+        key: 'CategoryId'
       },
       onDelete: 'CASCADE'
     },
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'Users',
-        key: 'UserId'
-      },
-      onDelete: 'CASCADE'
+    ProductName: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    PaymentMethod: {
+    Price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: 0
+    },
+    Size: {
       type: DataTypes.STRING
     },
-    TransactionId: {
+    Description: {
+      type: DataTypes.TEXT
+    },
+    ImageURL: {
       type: DataTypes.STRING
     },
-    Amount: {
-      type: DataTypes.FLOAT
-    },
-    PaymentStatus: {
+    Available: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: true
     }
   }, {
     sequelize: sequelize,
-    modelName: 'Payment',
-    tableName: 'Payments',
+    modelName: 'Product',
+    tableName: 'Products',
     timestamps: true
   });
-  return Payment;
+  return Product;
 };

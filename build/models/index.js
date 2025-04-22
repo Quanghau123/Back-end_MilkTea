@@ -6,27 +6,23 @@ var path = require('path');
 var Sequelize = require('sequelize');
 var basename = path.basename(__filename);
 var env = process.env.NODE_ENV || 'development';
-// const config = require(__dirname + '/../config/config.json')[env];
 var db = {};
 var sequelize;
-var customizeConfig = {
-  host: process.env.MYSQL_HOST,
-  port: process.env.MYSQL_PORT,
-  dialect: process.env.MYSQL_DIALECT,
+sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  protocol: 'postgres',
   logging: false,
   query: {
-    "raw": true
+    raw: true
   },
-  timezone: "+07:00"
-};
-sequelize = new Sequelize(process.env.MYSQL_DATABASE_NAME, process.env.MYSQL_USER, process.env.MYSQL_PASSWORD, customizeConfig);
-
-// if (config.use_env_variable) {
-//     sequelize = new Sequelize(process.env[config.use_env_variable], config);
-// } else {
-//     sequelize = new Sequelize(config.database, config.username, config.password, config);
-// }
-
+  timezone: "+07:00",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
+});
 fs.readdirSync(__dirname).filter(function (file) {
   return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js';
 }).forEach(function (file) {

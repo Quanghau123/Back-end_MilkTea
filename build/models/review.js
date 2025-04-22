@@ -16,69 +16,72 @@ function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf 
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var Payment = /*#__PURE__*/function (_Model) {
-    function Payment() {
-      _classCallCheck(this, Payment);
-      return _callSuper(this, Payment, arguments);
+  var Review = /*#__PURE__*/function (_Model) {
+    function Review() {
+      _classCallCheck(this, Review);
+      return _callSuper(this, Review, arguments);
     }
-    _inherits(Payment, _Model);
-    return _createClass(Payment, null, [{
+    _inherits(Review, _Model);
+    return _createClass(Review, null, [{
       key: "associate",
       value: function associate(models) {
-        Payment.belongsTo(models.Order, {
-          foreignKey: "OrderId",
+        Review.belongsTo(models.User, {
+          foreignKey: 'UserId',
           onDelete: 'SET NULL'
         });
-        Payment.belongsTo(models.User, {
-          foreignKey: "UserId",
+        Review.belongsTo(models.Product, {
+          foreignKey: 'ProductId',
           onDelete: 'SET NULL'
         });
       }
     }]);
   }(Model);
-  Payment.init({
-    PaymentId: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
-    OrderId: {
+  Review.init({
+    ReviewId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    },
+    ProductId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
-        model: 'Orders',
-        key: 'OrderId'
+        model: 'Products',
+        key: 'ProductId'
       },
       onDelete: 'CASCADE'
     },
     UserId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'Users',
         key: 'UserId'
       },
       onDelete: 'CASCADE'
     },
-    PaymentMethod: {
-      type: DataTypes.STRING
+    Rating: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      validate: {
+        min: 0,
+        max: 5
+      }
     },
-    TransactionId: {
-      type: DataTypes.STRING
+    Title: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
-    Amount: {
-      type: DataTypes.FLOAT
-    },
-    PaymentStatus: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    Comment: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize: sequelize,
-    modelName: 'Payment',
-    tableName: 'Payments',
+    modelName: 'Review',
+    tableName: 'Reviews',
     timestamps: true
   });
-  return Payment;
+  return Review;
 };

@@ -16,69 +16,72 @@ function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf 
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var Payment = /*#__PURE__*/function (_Model) {
-    function Payment() {
-      _classCallCheck(this, Payment);
-      return _callSuper(this, Payment, arguments);
+  var Order = /*#__PURE__*/function (_Model) {
+    function Order() {
+      _classCallCheck(this, Order);
+      return _callSuper(this, Order, arguments);
     }
-    _inherits(Payment, _Model);
-    return _createClass(Payment, null, [{
+    _inherits(Order, _Model);
+    return _createClass(Order, null, [{
       key: "associate",
       value: function associate(models) {
-        Payment.belongsTo(models.Order, {
-          foreignKey: "OrderId",
+        Order.belongsTo(models.User, {
+          foreignKey: 'UserId',
           onDelete: 'SET NULL'
         });
-        Payment.belongsTo(models.User, {
-          foreignKey: "UserId",
+        Order.belongsTo(models.Product, {
+          foreignKey: 'ProductId',
           onDelete: 'SET NULL'
+        });
+        Order.hasOne(models.Payment, {
+          foreignKey: 'OrderId',
+          onDelete: 'CASCADE'
         });
       }
     }]);
   }(Model);
-  Payment.init({
-    PaymentId: {
+  Order.init({
+    OrderId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    OrderId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'Orders',
-        key: 'OrderId'
-      },
-      onDelete: 'CASCADE'
-    },
     UserId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'Users',
         key: 'UserId'
       },
       onDelete: 'CASCADE'
     },
-    PaymentMethod: {
-      type: DataTypes.STRING
+    ProductId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Products',
+        key: 'ProductId'
+      },
+      onDelete: 'CASCADE'
     },
-    TransactionId: {
-      type: DataTypes.STRING
+    Quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        min: 1
+      }
     },
-    Amount: {
-      type: DataTypes.FLOAT
-    },
-    PaymentStatus: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    TotalAmount: {
+      type: DataTypes.FLOAT,
+      allowNull: false
     }
   }, {
     sequelize: sequelize,
-    modelName: 'Payment',
-    tableName: 'Payments',
+    modelName: 'Order',
+    tableName: 'Orders',
     timestamps: true
   });
-  return Payment;
+  return Order;
 };

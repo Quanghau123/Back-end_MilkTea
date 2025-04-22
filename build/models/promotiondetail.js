@@ -16,69 +16,53 @@ function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf 
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var Payment = /*#__PURE__*/function (_Model) {
-    function Payment() {
-      _classCallCheck(this, Payment);
-      return _callSuper(this, Payment, arguments);
+  var PromotionDetail = /*#__PURE__*/function (_Model) {
+    function PromotionDetail() {
+      _classCallCheck(this, PromotionDetail);
+      return _callSuper(this, PromotionDetail, arguments);
     }
-    _inherits(Payment, _Model);
-    return _createClass(Payment, null, [{
+    _inherits(PromotionDetail, _Model);
+    return _createClass(PromotionDetail, null, [{
       key: "associate",
       value: function associate(models) {
-        Payment.belongsTo(models.Order, {
-          foreignKey: "OrderId",
-          onDelete: 'SET NULL'
-        });
-        Payment.belongsTo(models.User, {
-          foreignKey: "UserId",
+        PromotionDetail.belongsTo(models.Promotion, {
+          foreignKey: 'PromotionId',
           onDelete: 'SET NULL'
         });
       }
     }]);
   }(Model);
-  Payment.init({
-    PaymentId: {
+  PromotionDetail.init({
+    DetailId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    OrderId: {
+    PromotionId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
-        model: 'Orders',
-        key: 'OrderId'
+        model: 'Promotions',
+        key: 'PromotionId'
       },
       onDelete: 'CASCADE'
     },
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'Users',
-        key: 'UserId'
-      },
-      onDelete: 'CASCADE'
+    DiscountType: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    PaymentMethod: {
-      type: DataTypes.STRING
+    Note: {
+      type: DataTypes.TEXT
     },
-    TransactionId: {
-      type: DataTypes.STRING
-    },
-    Amount: {
-      type: DataTypes.FLOAT
-    },
-    PaymentStatus: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    Content: {
+      type: DataTypes.TEXT
     }
   }, {
     sequelize: sequelize,
-    modelName: 'Payment',
-    tableName: 'Payments',
-    timestamps: true
+    modelName: 'PromotionDetail',
+    tableName: 'PromotionDetails',
+    timestamps: false
   });
-  return Payment;
+  return PromotionDetail;
 };
