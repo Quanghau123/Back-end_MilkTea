@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon --exec babel-node src/app.js",
-    "build-src": "babel src -d build --copy-files",
+    "build-src": "npx babel src -d build --copy-files",
     "start": "npm run build-src && node build/app.js"
   },
   "keywords": [],
