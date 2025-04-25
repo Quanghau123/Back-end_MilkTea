@@ -1,13 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import initWebRoutes from "./routes/web.js";
 import connectDB from "./config/connectDB.js";
-
-console.log(process.env.DATABASE_URL);
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
