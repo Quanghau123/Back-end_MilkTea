@@ -59,6 +59,7 @@ let initWebRoutes = (app) => {
 
     router.get("/GetAllPromotionDetails", promotionDetailController.handleGetAllPromotionDetails);
     router.get("/GetPromotionDetailById/:id", promotionDetailController.handleGetPromotionDetailById);
+    router.get("/GetPromotionDetailsByPromotionId/:id", promotionDetailController.handleGetPromotionDetailsByPromotionId);
     router.post("/CreatePromotionDetail", promotionDetailController.handleCreatePromotionDetail);
     router.put("/UpdatePromotionDetail", promotionDetailController.handleUpdatePromotionDetail);
     router.delete("/DeletePromotionDetail/:id", promotionDetailController.handleDeletePromotionDetail);

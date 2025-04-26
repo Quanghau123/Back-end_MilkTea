@@ -41,6 +41,31 @@ let handleGetPromotionDetailById = async (req, res) => {
     }
 };
 
+let handleGetPromotionDetailsByPromotionId = async (req, res) => {
+    try {
+        const promotionId = req.params.promotionId;
+
+        if (!promotionId) {
+            return res.status(400).json({
+                errCode: 1,
+                errMessage: "Missing PromotionId"
+            });
+        }
+
+        const details = await PromotionDetailService.getPromotionDetailsByPromotionId(promotionId);
+        return res.status(200).json({
+            errCode: 0,
+            errMessage: "OK",
+            details
+        });
+    } catch (error) {
+        return res.status(404).json({
+            errCode: error.errCode || 1,
+            errMessage: error.errMessage || "Promotion details not found"
+        });
+    }
+};
+
 let handleCreatePromotionDetail = async (req, res) => {
     try {
         const result = await PromotionDetailService.createPromotionDetail(req.body);
@@ -89,6 +114,7 @@ let handleDeletePromotionDetail = async (req, res) => {
 export default {
     handleGetAllPromotionDetails,
     handleGetPromotionDetailById,
+    handleGetPromotionDetailsByPromotionId,
     handleCreatePromotionDetail,
     handleUpdatePromotionDetail,
     handleDeletePromotionDetail

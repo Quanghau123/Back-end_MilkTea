@@ -25,6 +25,22 @@ let getPromotionDetailById = async (id) => {
     }
 };
 
+let getPromotionDetailsByPromotionId = async (promotionId) => {
+    try {
+        const details = await db.PromotionDetail.findAll({
+            where: { PromotionId: promotionId }
+        });
+
+        if (details.length === 0) {
+            throw { errCode: 1, errMessage: "No promotion details found for the given PromotionId" };
+        }
+
+        return details;
+    } catch (error) {
+        throw error;
+    }
+};
+
 let createPromotionDetail = async (data) => {
     try {
         await db.PromotionDetail.create(data);
@@ -95,6 +111,7 @@ let deletePromotionDetail = async (id) => {
 export default {
     getAllPromotionDetails,
     getPromotionDetailById,
+    getPromotionDetailsByPromotionId,
     createPromotionDetail,
     updatePromotionDetail,
     deletePromotionDetail
