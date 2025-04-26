@@ -43,7 +43,7 @@ let handleGetPromotionDetailById = async (req, res) => {
 
 let handleGetPromotionDetailsByPromotionId = async (req, res) => {
     try {
-        const promotionId = req.params.promotionId;
+        const promotionId = req.params.id;
 
         if (!promotionId) {
             return res.status(400).json({
