@@ -42,27 +42,17 @@ let handleGetPromotionDetailById = async (req, res) => {
 };
 
 let handleGetPromotionDetailsByPromotionId = async (req, res) => {
+    const promotionId = req.params.id;
+
+    if (!promotionId) {
+        return res.status(400).json({ errCode: 1, errMessage: "Missing PromotionId" });
+    }
+
     try {
-        const promotionId = req.params.id;
-
-        if (!promotionId) {
-            return res.status(400).json({
-                errCode: 1,
-                errMessage: "Missing PromotionId"
-            });
-        }
-
         const details = await PromotionDetailService.getPromotionDetailsByPromotionId(promotionId);
-        return res.status(200).json({
-            errCode: 0,
-            errMessage: "OK",
-            details
-        });
+        return res.status(200).json({ errCode: 0, errMessage: "OK", details });
     } catch (error) {
-        return res.status(404).json({
-            errCode: error.errCode || 1,
-            errMessage: error.errMessage || "Promotion details not found"
-        });
+        return res.status(404).json({ errCode: error.errCode || 1, errMessage: error.errMessage || "Promotion details not found" });
     }
 };
 

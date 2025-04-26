@@ -26,25 +26,22 @@ let getPromotionDetailById = async (id) => {
 };
 
 let getPromotionDetailsByPromotionId = async (promotionId) => {
-    try {
-        const details = await db.PromotionDetail.findAll({
-            where: { PromotionId: promotionId },
-            include: [
-                {
-                    model: db.Promotion,
-                    attributes: ['StartDate', 'EndDate', 'Title', 'Scription', 'ImageURL']
-                }
-            ]
-        });
+    const details = await db.PromotionDetail.findOne({
+        where: { PromotionId: promotionId },
+        include: [
+            {
+                model: db.Promotion,
+                attributes: ['StartDate', 'EndDate', 'Title', 'Scription', 'ImageURL']
+            }
+        ],
+        raw: true
+    });
 
-        if (details.length === 0) {
-            throw { errCode: 1, errMessage: "No promotion details found for the given PromotionId" };
-        }
-
-        return details;
-    } catch (error) {
-        throw error;
+    if (!details) {
+        throw { errCode: 1, errMessage: "No promotion details found for the given PromotionId" };
     }
+
+    return details;
 };
 
 let createPromotionDetail = async (data) => {
