@@ -28,7 +28,13 @@ let getPromotionDetailById = async (id) => {
 let getPromotionDetailsByPromotionId = async (promotionId) => {
     try {
         const details = await db.PromotionDetail.findAll({
-            where: { PromotionId: promotionId }
+            where: { PromotionId: promotionId },
+            include: [
+                {
+                    model: db.Promotion,
+                    attributes: ['StartDate', 'EndDate', 'Title', 'Scription', 'ImageURL']
+                }
+            ]
         });
 
         if (details.length === 0) {

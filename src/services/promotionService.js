@@ -59,12 +59,11 @@ let updatePromotion = (data) => {
                 });
             }
 
-            // Update fields nếu có
             Object.keys(data).forEach(key => {
                 if (key !== "PromotionId") promotion[key] = data[key];
             });
 
-            await promotion.save(); // Lưu lại đối tượng đã được cập nhật
+            await promotion.save(); 
 
             resolve({
                 errCode: 0,
