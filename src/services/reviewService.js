@@ -3,7 +3,15 @@ import db from "@models/index.js";
 let getAllReviews = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let reviews = await db.Review.findAll();
+            let reviews = await db.Review.findAll({
+                include: [
+                    {
+                        model: db.User,
+                        attributes: ['UserName']
+                    }
+                ],
+                raw: true
+            });
             resolve(reviews);
         } catch (err) {
             reject(err);
