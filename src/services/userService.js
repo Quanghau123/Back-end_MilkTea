@@ -48,8 +48,6 @@ let handleUserLogin = (email, password) => {
                 { expiresIn: tokenExpiry }
             );
 
-            console.log("Generated Token:", token);
-
             delete user.UserPassword;
             userData.errCode = 0;
             userData.errMessage = 'OK';
