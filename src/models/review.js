@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     class Review extends Model {
         static associate(models) {
             Review.belongsTo(models.User, { foreignKey: 'UserId', onDelete: 'SET NULL' });
-            Review.belongsTo(models.Product, { foreignKey: 'ProductId', onDelete: 'SET NULL' });
         }
     }
 
@@ -15,15 +14,6 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
-        },
-        ProductId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'Products',
-                key: 'ProductId'
-            },
-            onDelete: 'CASCADE'
         },
         UserId: {
             type: DataTypes.INTEGER,
