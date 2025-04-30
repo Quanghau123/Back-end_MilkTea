@@ -56,7 +56,7 @@ let handleDeleteOrder = async (req, res) => {
 
 const handleCreateOrderFromCart = async (req, res) => {
     try {
-        const userId = req.body.UserId;
+        const userId = req.body.userId;
         const shippingInfo = {
             address: req.body.Address,
             phone: req.body.Phone
