@@ -57,18 +57,13 @@ let handleDeleteOrder = async (req, res) => {
 const handleCreateOrderFromCart = async (req, res) => {
     try {
         const userId = req.body.userId;
-        const shippingInfo = {
-            address: req.body.Address,
-            phone: req.body.Phone
-        };
-
+        const shippingInfo = req.body.shippingInfo;
         const result = await OrderService.createOrderFromCart(userId, shippingInfo);
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({ errCode: -1, errMessage: error.message });
     }
 };
-
 
 export default {
     handleGetAllOrders,

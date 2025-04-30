@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW
     },
     ShippingAddress: DataTypes.STRING,
+    ShippingPhone: DataTypes.STRING,
     TotalAmount: DataTypes.FLOAT,
     Status: DataTypes.STRING // pending, paid, shipped, canceled
   }, {

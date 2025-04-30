@@ -21,6 +21,7 @@ module.exports = {
         defaultValue: Sequelize.NOW
       },
       ShippingAddress: Sequelize.STRING,
+      ShippingPhone: Sequelize.STRING,
       TotalAmount: Sequelize.FLOAT,
       Status: Sequelize.STRING,
       createdAt: {
