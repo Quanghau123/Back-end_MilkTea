@@ -42,8 +42,12 @@ let getCartItemsByUserId = async (userId) => {
 let createNewCartItem = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await db.CartItem.create(data);
-            resolve({ errCode: 0, message: "CartItem created successfully!" });
+            const createdItem = await db.CartItem.create(data);
+            resolve({
+                errCode: 0,
+                message: "CartItem created successfully!",
+                cartItem: createdItem,
+            });
         } catch (e) {
             reject(e);
         }
