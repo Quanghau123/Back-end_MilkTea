@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Payment, { foreignKey: "UserId", onDelete: "CASCADE" });
       User.hasMany(models.Review, { foreignKey: "UserId", onDelete: "CASCADE" });
       User.hasMany(models.Order, { foreignKey: "UserId", onDelete: "CASCADE" });
+      User.hasMany(models.CartItem, { foreignKey: 'UserId' });
     }
   }
 

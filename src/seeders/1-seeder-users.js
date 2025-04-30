@@ -31,8 +31,9 @@ module.exports = {
         UserName: 'De Vuong',
         UserPassword: hashPassword,
         Email: 'devuong@gmail.com',
-        Phone: '0989855521',
+        Phone: '0989855562',
         Role: 'user',
+        Addresss: "789 Pham Van Chieu, Go Vap, Ho Chi Minh",
         createdAt: new Date(),
         updatedAt: new Date(),
       }

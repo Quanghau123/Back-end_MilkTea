@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
       Product.belongsTo(models.Category, { foreignKey: 'CategoryId', onDelete: 'SET NULL' });
-      Product.hasMany(models.Order, { foreignKey: "ProductId", onDelete: "CASCADE" });
+      Product.hasMany(models.CartItem, { foreignKey: 'ProductId' });
+      Product.hasMany(models.OrderItem, { foreignKey: 'ProductId' });
     }
   }
 
@@ -33,9 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 0
-    },
-    Size: {
-      type: DataTypes.STRING
     },
     Description: {
       type: DataTypes.TEXT

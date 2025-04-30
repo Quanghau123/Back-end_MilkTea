@@ -28,9 +28,6 @@ module.exports = {
         allowNull: false,
         defaultValue: 0
       },
-      Size: {
-        type: Sequelize.STRING
-      },
       Description: {
         type: Sequelize.TEXT
       },

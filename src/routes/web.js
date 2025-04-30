@@ -1,9 +1,12 @@
 import express from 'express';
+
 import userController from "@controllers/userController.js";
 import categoryController from '@controllers/categoryController.js';
 import productController from '@controllers/productController.js';
+import cartItemController from '@controllers/cartItemController.js';
 import paymentController from '@controllers/paymentController.js';
 import orderController from '@controllers/orderController.js';
+import orderItemController from '@controllers/orderItemController.js';
 import promotionController from "@controllers/promotionController.js";
 import promotionDetailController from "@controllers/promotionDetailController.js";
 import reviewController from '@controllers/reviewController.js';
@@ -37,11 +40,27 @@ let initWebRoutes = (app) => {
     router.put('/UpdateProduct', productController.handleUpdateProduct);
     router.delete('/DeleteProduct/:id', productController.handleDeleteProduct);
 
+    router.get('/GetAllCartItems', cartItemController.handleGetAllCartItems);
+    router.get('/GetCartItemById/:id', cartItemController.handleGetCartItemById);
+    router.get('/GetCartItemsByUserId', cartItemController.handleGetCartItemsByUserId);
+    router.post('/CreateNewCartItem', cartItemController.handleCreateNewCartItem);
+    router.put('/UpdateCartItem', cartItemController.handleUpdateCartItem);
+    router.delete('/DeleteCartItem/:id', cartItemController.handleDeleteCartItem);
+    router.get('/GetCartSubtotal', cartItemController.handleGetCartSubtotal);
+
     router.get('/GetAllOrders', orderController.handleGetAllOrders);
     router.get('/GetOrderById/:id', orderController.handleGetOrderById);
-    router.post('/CreateNewOrder', orderController.handleCreateNewOrder);
+    router.get('/GetOrdersByUserId', orderController.handleGetOrdersByUserId);
     router.put('/UpdateOrder', orderController.handleUpdateOrder);
     router.delete('/DeleteOrder/:id', orderController.handleDeleteOrder);
+    router.post('/CreateOrderFromCart', orderController.handleCreateOrderFromCart);
+
+    router.get('/GetAllOrderItems', orderItemController.handleGetAllOrderItems);
+    router.get('/GetOrderItemById/:id', orderItemController.handleGetOrderItemById);
+    router.get('/GetOrderItemsByOrderId/:orderId', orderItemController.handleGetOrderItemsByOrderId);
+    router.post('/CreateNewOrderItem', orderItemController.handleCreateNewOrderItem);
+    router.put('/UpdateOrderItem', orderItemController.handleUpdateOrderItem);
+    router.delete('/DeleteOrderItem/:id', orderItemController.handleDeleteOrderItem);
 
     router.get('/GetAllPayments', paymentController.handleGetAllPayments);
     router.get('/GetPayment/:id', paymentController.handleGetPaymentById);
