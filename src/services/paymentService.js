@@ -3,8 +3,6 @@ import crypto from "crypto";
 import axios from "axios";
 import dotenv from "dotenv";
 
-const { Order, Payment } = db;
-
 dotenv.config();
 
 let getAllPayments = async () => {
@@ -25,6 +23,74 @@ let getPaymentById = async (paymentId) => {
         }
 
         return { errCode: 0, data: payment };
+    } catch (error) {
+        return { errCode: 500, errMessage: "Database error", error: error.message };
+    }
+};
+
+const getPaymentsByUserId = async (userId) => {
+    try {
+        const payments = await db.Payment.findAll({
+            where: { UserId: userId },
+            include: [
+                {
+                    model: db.User,
+                    attributes: ['UserName', 'Phone', 'Email']
+                },
+                {
+                    model: db.Order
+                }
+            ],
+            raw: true
+        });
+
+        if (!payments || payments.length === 0) {
+            return { errCode: 1, errMessage: "No payments found for this user" };
+        }
+
+        return { errCode: 0, data: payments };
+    } catch (error) {
+        return { errCode: 500, errMessage: "Database error", error: error.message };
+    }
+};
+
+const searchPaymentsByUserInfo = async (keyword) => {
+    try {
+        const users = await db.User.findAll({
+            where: {
+                [db.Sequelize.Op.or]: [
+                    { UserName: { [db.Sequelize.Op.like]: `%${keyword}%` } },
+                    { Phone: { [db.Sequelize.Op.like]: `%${keyword}%` } },
+                    { Email: { [db.Sequelize.Op.like]: `%${keyword}%` } }
+                ]
+            }
+        });
+
+        if (!users || users.length === 0) {
+            return { errCode: 1, errMessage: "No users matched the keyword" };
+        }
+
+        const userIds = users.map(user => user.UserId);
+
+        const payments = await db.Payment.findAll({
+            where: { UserId: userIds },
+            include: [
+                {
+                    model: db.User,
+                    attributes: ['UserName', 'Phone', 'Email']
+                },
+                {
+                    model: db.Order
+                }
+            ],
+            raw: true
+        });
+
+        if (payments.length === 0) {
+            return { errCode: 2, errMessage: "No payments found for the matched users" };
+        }
+
+        return { errCode: 0, data: payments };
     } catch (error) {
         return { errCode: 500, errMessage: "Database error", error: error.message };
     }
@@ -112,8 +178,8 @@ let deletePayment = async (paymentId) => {
 
 const processMomoPayment = async (userId, OrderId) => {
     try {
-        let order = await Order.findOne({
-            where: { id: OrderId },
+        let order = await db.Order.findOne({
+            where: { OrderId },
             raw: false
         });
 
@@ -162,7 +228,7 @@ const processMomoPayment = async (userId, OrderId) => {
         });
 
         if (response.data.resultCode === 0) {
-            await Payment.create({
+            await db.Payment.create({
                 OrderId: OrderId,
                 UserId: userId,
                 PaymentMethod: "MoMo",
@@ -182,11 +248,50 @@ const processMomoPayment = async (userId, OrderId) => {
     }
 };
 
+const updatePaymentStatusByTransactionId = async (transactionId, paymentStatus) => {
+    try {
+        const payment = await db.Payment.findOne({
+            where: { TransactionId: transactionId },
+            raw: true
+        });
+
+        if (!payment) {
+            return { errCode: 2, errMessage: "Payment not found" };
+        }
+
+        await db.Payment.update(
+            { PaymentStatus: !!paymentStatus },
+            { where: { TransactionId: transactionId } }
+        );
+
+        return { errCode: 0, message: "Payment status updated!" };
+    } catch (error) {
+        console.error("[updatePaymentStatusByTransactionId] Lỗi:", error);
+        return { errCode: -1, errMessage: error.message };
+    }
+};
+
+const getPaymentByTransactionId = async (transactionId) => {
+    try {
+        const payment = await db.Payment.findOne({
+            where: { TransactionId: transactionId }
+        });
+        return payment || null;
+    } catch (error) {
+        console.error("[getPaymentByTransactionId] Lỗi:", error);
+        return null;
+    }
+};
+
 export default {
     getAllPayments,
     getPaymentById,
+    getPaymentsByUserId,
+    searchPaymentsByUserInfo,
     createNewPayment,
     updatePayment,
     deletePayment,
     processMomoPayment,
+    updatePaymentStatusByTransactionId,
+    getPaymentByTransactionId
 };

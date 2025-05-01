@@ -35,6 +35,36 @@ let handleGetPaymentById = async (req, res) => {
     }
 };
 
+let handleGetPaymentsByUserId = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        if (!userId) {
+            return res.status(400).json({ errCode: 1, errMessage: "Missing userId parameter" });
+        }
+
+        let response = await paymentService.getPaymentsByUserId(userId);
+        return res.status(response.errCode === 0 ? 200 : 404).json(response);
+    } catch (error) {
+        return res.status(500).json({ errCode: 500, errMessage: error.message });
+    }
+};
+
+let handleSearchPaymentsByUserInfo = async (req, res) => {
+    try {
+        const { keyword } = req.query;
+
+        if (!keyword) {
+            return res.status(400).json({ errCode: 1, errMessage: "Missing search keyword" });
+        }
+
+        let response = await paymentService.searchPaymentsByUserInfo(keyword);
+        return res.status(response.errCode === 0 ? 200 : 404).json(response);
+    } catch (error) {
+        return res.status(500).json({ errCode: 500, errMessage: error.message });
+    }
+};
+
 let handleCreateNewPayment = async (req, res) => {
     try {
         let response = await paymentService.createNewPayment(req.body);
@@ -77,16 +107,16 @@ let handleDeletePayment = async (req, res) => {
 
 let handleProcessMomoPayment = async (req, res) => {
     try {
-        let { UserId, BookTourId } = req.body;
+        let { UserId, OrderId } = req.body;
 
-        if (!UserId || !BookTourId) {
+        if (!UserId || !OrderId) {
             return res.status(400).json({
                 errCode: 1,
                 errMessage: "Thiếu thông tin thanh toán"
             });
         }
 
-        let result = await paymentService.processMomoPayment(UserId, BookTourId);
+        let result = await paymentService.processMomoPayment(UserId, OrderId);
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({
@@ -98,24 +128,28 @@ let handleProcessMomoPayment = async (req, res) => {
 
 let handleMomoIPN = async (req, res) => {
     try {
-        let { orderId, resultCode } = req.body;
+        let { transactionId, resultCode } = req.body;
 
-        if (!orderId) {
-            return res.status(400).json({ errCode: 1, errMessage: "Thiếu orderId" });
+        if (!transactionId) {
+            console.warn("[handleMomoIPN] Thiếu transactionId!");
+            return res.status(400).json({ errCode: 1, errMessage: "Thiếu TransactionId" });
         }
 
-        let payment = await paymentService.getPaymentByTransactionId(orderId);
+        let payment = await paymentService.getPaymentByTransactionId(transactionId);
         if (!payment) {
+            console.warn("[handleMomoIPN] Không tìm thấy giao dịch:", transactionId);
             return res.status(404).json({ errCode: 2, errMessage: "Không tìm thấy giao dịch" });
         }
 
         if (resultCode === 0) {
-            await paymentService.updatePayment({ PaymentId: payment.PaymentId, PaymentStatus: true });
-            return res.status(200).json({ errCode: 0, message: "Thanh toán thành công!" });
+            const result = await paymentService.updatePaymentStatusByTransactionId(transactionId, true);
+            return res.status(200).json(result);
         } else {
-            return res.status(400).json({ errCode: 3, errMessage: "Thanh toán thất bại" });
+            const result = await paymentService.updatePaymentStatusByTransactionId(transactionId, false);
+            return res.status(200).json(result);
         }
     } catch (error) {
+        console.error("[handleMomoIPN] Lỗi:", error);
         return res.status(500).json({ errCode: -1, errMessage: error.message });
     }
 };
@@ -123,6 +157,8 @@ let handleMomoIPN = async (req, res) => {
 export default {
     handleGetAllPayments,
     handleGetPaymentById,
+    handleGetPaymentsByUserId,
+    handleSearchPaymentsByUserInfo,
     handleCreateNewPayment,
     handleUpdatePayment,
     handleDeletePayment,
