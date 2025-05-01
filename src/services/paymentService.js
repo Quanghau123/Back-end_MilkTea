@@ -196,7 +196,7 @@ const processMomoPayment = async (userId, OrderId) => {
 
         let requestId = `${partnerCode}_${Date.now()}`;
         let orderId = requestId;
-        let orderInfo = "Thanh toán MoMo cho tour";
+        let orderInfo = "Thanh toán MoMo cho sản phẩm";
         let redirectUrl = "https://yourdomain.com/payment/success";
         let ipnUrl = "https://yourdomain.com/payment/callback";
         let requestType = "captureWallet";
