@@ -16,54 +16,38 @@ function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf 
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var Book_Tour = /*#__PURE__*/function (_Model) {
-    function Book_Tour() {
-      _classCallCheck(this, Book_Tour);
-      return _callSuper(this, Book_Tour, arguments);
+  var CartItem = /*#__PURE__*/function (_Model) {
+    function CartItem() {
+      _classCallCheck(this, CartItem);
+      return _callSuper(this, CartItem, arguments);
     }
-    _inherits(Book_Tour, _Model);
-    return _createClass(Book_Tour, null, [{
+    _inherits(CartItem, _Model);
+    return _createClass(CartItem, null, [{
       key: "associate",
       value: function associate(models) {
-        Book_Tour.belongsTo(models.Tour, {
-          foreignKey: "TourId",
-          onDelete: "CASCADE"
+        CartItem.belongsTo(models.User, {
+          foreignKey: 'UserId'
         });
-        Book_Tour.hasOne(models.Payment, {
-          foreignKey: "BookTourId",
-          onDelete: "CASCADE"
+        CartItem.belongsTo(models.Product, {
+          foreignKey: 'ProductId'
         });
       }
     }]);
   }(Model);
-  Book_Tour.init({
-    BookTourId: {
-      allowNull: false,
-      autoIncrement: true,
+  CartItem.init({
+    CartItemId: {
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      autoIncrement: true
     },
-    TourId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'Tours',
-        key: 'TourId'
-      },
-      onDelete: 'CASCADE'
-    },
-    QuantityAdults: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    QuantityChildren: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    }
+    UserId: DataTypes.INTEGER,
+    ProductId: DataTypes.INTEGER,
+    Quantity: DataTypes.INTEGER
   }, {
     sequelize: sequelize,
-    modelName: 'Book_Tour',
-    tableName: 'Book_Tours',
+    modelName: 'CartItem',
+    tableName: 'CartItems',
     timestamps: true
   });
-  return Book_Tour;
+  return CartItem;
 };

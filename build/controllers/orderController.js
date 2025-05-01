@@ -74,7 +74,7 @@ var handleGetOrderById = /*#__PURE__*/function () {
           _context2.t0 = _context2["catch"](3);
           return _context2.abrupt("return", res.status(404).json({
             errCode: _context2.t0.errCode || 1,
-            errMessage: _context2.t0.errMessage || "Order not found"
+            errMessage: _context2.t0.errMessage || "Not found"
           }));
         case 13:
         case "end":
@@ -86,38 +86,48 @@ var handleGetOrderById = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
-var handleCreateNewOrder = /*#__PURE__*/function () {
+var handleGetOrdersByUserId = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var result;
+    var userId, orders;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           _context3.prev = 0;
-          _context3.next = 3;
-          return _orderService["default"].createNewOrder(req.body);
-        case 3:
-          result = _context3.sent;
-          return _context3.abrupt("return", res.status(200).json(result));
-        case 7:
-          _context3.prev = 7;
+          userId = req.query.userId;
+          if (userId) {
+            _context3.next = 4;
+            break;
+          }
+          return _context3.abrupt("return", res.status(400).json({
+            errCode: 1,
+            errMessage: "Missing userId"
+          }));
+        case 4:
+          _context3.next = 6;
+          return _orderService["default"].getOrdersByUserId(userId);
+        case 6:
+          orders = _context3.sent;
+          return _context3.abrupt("return", res.status(200).json(orders));
+        case 10:
+          _context3.prev = 10;
           _context3.t0 = _context3["catch"](0);
           return _context3.abrupt("return", res.status(500).json({
-            errCode: 2,
-            errMessage: _context3.t0.message || "Error while creating order"
+            errCode: -1,
+            errMessage: _context3.t0.message
           }));
-        case 10:
+        case 13:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 10]]);
   }));
-  return function handleCreateNewOrder(_x5, _x6) {
+  return function handleGetOrdersByUserId(_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 var handleUpdateOrder = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var result;
+    var response;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
@@ -125,14 +135,14 @@ var handleUpdateOrder = /*#__PURE__*/function () {
           _context4.next = 3;
           return _orderService["default"].updateOrder(req.body);
         case 3:
-          result = _context4.sent;
-          return _context4.abrupt("return", res.status(200).json(result));
+          response = _context4.sent;
+          return _context4.abrupt("return", res.status(200).json(response));
         case 7:
           _context4.prev = 7;
           _context4.t0 = _context4["catch"](0);
           return _context4.abrupt("return", res.status(500).json({
             errCode: 2,
-            errMessage: _context4.t0.message || "Error while updating order"
+            errMessage: _context4.t0.message || "Error while updating"
           }));
         case 10:
         case "end":
@@ -146,7 +156,7 @@ var handleUpdateOrder = /*#__PURE__*/function () {
 }();
 var handleDeleteOrder = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var id, result;
+    var id, response;
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) switch (_context5.prev = _context5.next) {
         case 0:
@@ -164,14 +174,14 @@ var handleDeleteOrder = /*#__PURE__*/function () {
           _context5.next = 6;
           return _orderService["default"].deleteOrder(id);
         case 6:
-          result = _context5.sent;
-          return _context5.abrupt("return", res.status(result.errCode === 0 ? 200 : 400).json(result));
+          response = _context5.sent;
+          return _context5.abrupt("return", res.status(response.errCode === 0 ? 200 : 400).json(response));
         case 10:
           _context5.prev = 10;
           _context5.t0 = _context5["catch"](3);
           return _context5.abrupt("return", res.status(500).json({
             errCode: 500,
-            errMessage: _context5.t0.message || "Error while deleting order"
+            errMessage: _context5.t0.message || "Error while deleting"
           }));
         case 13:
         case "end":
@@ -183,10 +193,42 @@ var handleDeleteOrder = /*#__PURE__*/function () {
     return _ref5.apply(this, arguments);
   };
 }();
+var handleCreateOrderFromCart = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+    var userId, shippingInfo, result;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.prev = 0;
+          userId = req.body.userId;
+          shippingInfo = req.body.shippingInfo;
+          _context6.next = 5;
+          return _orderService["default"].createOrderFromCart(userId, shippingInfo);
+        case 5:
+          result = _context6.sent;
+          return _context6.abrupt("return", res.status(200).json(result));
+        case 9:
+          _context6.prev = 9;
+          _context6.t0 = _context6["catch"](0);
+          return _context6.abrupt("return", res.status(500).json({
+            errCode: -1,
+            errMessage: _context6.t0.message
+          }));
+        case 12:
+        case "end":
+          return _context6.stop();
+      }
+    }, _callee6, null, [[0, 9]]);
+  }));
+  return function handleCreateOrderFromCart(_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}();
 var _default = exports["default"] = {
   handleGetAllOrders: handleGetAllOrders,
   handleGetOrderById: handleGetOrderById,
-  handleCreateNewOrder: handleCreateNewOrder,
+  handleGetOrdersByUserId: handleGetOrdersByUserId,
   handleUpdateOrder: handleUpdateOrder,
-  handleDeleteOrder: handleDeleteOrder
+  handleDeleteOrder: handleDeleteOrder,
+  handleCreateOrderFromCart: handleCreateOrderFromCart
 };

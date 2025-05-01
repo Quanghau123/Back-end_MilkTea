@@ -29,10 +29,6 @@ module.exports = function (sequelize, DataTypes) {
           foreignKey: 'UserId',
           onDelete: 'SET NULL'
         });
-        Review.belongsTo(models.Product, {
-          foreignKey: 'ProductId',
-          onDelete: 'SET NULL'
-        });
       }
     }]);
   }(Model);
@@ -42,15 +38,6 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true,
       allowNull: false
-    },
-    ProductId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Products',
-        key: 'ProductId'
-      },
-      onDelete: 'CASCADE'
     },
     UserId: {
       type: DataTypes.INTEGER,

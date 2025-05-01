@@ -34,7 +34,8 @@ var handleLogin = /*#__PURE__*/function () {
           return _context.abrupt("return", res.status(200).json({
             errCode: userData.errCode,
             message: userData.errMessage,
-            user: userData.user ? userData.user : {}
+            user: userData.user ? userData.user : {},
+            token: userData.token ? userData.token : null
           }));
         case 8:
         case "end":

@@ -11,51 +11,22 @@ module.exports = {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return queryInterface.createTable('Orders', {
-              OrderId: {
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true,
-                type: Sequelize.INTEGER
-              },
-              UserId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                references: {
-                  model: 'Users',
-                  key: 'UserId'
-                },
-                onDelete: 'CASCADE'
-              },
-              ProductId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                references: {
-                  model: 'Products',
-                  key: 'ProductId'
-                },
-                onDelete: 'CASCADE'
-              },
-              Quantity: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                defaultValue: 1
-              },
-              TotalAmount: {
-                type: Sequelize.FLOAT,
-                allowNull: false
-              },
-              createdAt: {
-                allowNull: false,
-                type: Sequelize.DATE,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-              },
-              updatedAt: {
-                allowNull: false,
-                type: Sequelize.DATE,
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-              }
-            });
+            return queryInterface.bulkInsert('Categories', [{
+              CategoryName: 'Trà Sữa',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/TeaCard/TeaCard1.jpeg',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            }, {
+              CategoryName: 'Trà Trái Cây',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/TeaCard/TeaCard7.jpeg',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            }, {
+              CategoryName: 'Thức Uống Đặc Biệt',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/TeaCard/TeaCard13.jpeg',
+              createdAt: new Date(),
+              updatedAt: new Date()
+            }]);
           case 2:
           case "end":
             return _context.stop();
@@ -73,7 +44,7 @@ module.exports = {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return queryInterface.dropTable('Orders');
+            return queryInterface.bulkDelete('Categories', null, {});
           case 2:
           case "end":
             return _context2.stop();

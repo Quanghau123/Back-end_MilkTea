@@ -37,6 +37,9 @@ module.exports = function (sequelize, DataTypes) {
           foreignKey: "UserId",
           onDelete: "CASCADE"
         });
+        User.hasMany(models.CartItem, {
+          foreignKey: 'UserId'
+        });
       }
     }]);
   }(Model);

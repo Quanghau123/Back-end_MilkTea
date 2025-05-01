@@ -137,15 +137,12 @@ var updatePromotion = function updatePromotion(data) {
               errMessage: "Promotion not found"
             }));
           case 8:
-            // Update fields nếu có
             Object.keys(data).forEach(function (key) {
               if (key !== "PromotionId") promotion[key] = data[key];
             });
             _context4.next = 11;
             return promotion.save();
           case 11:
-            // Lưu lại đối tượng đã được cập nhật
-
             resolve({
               errCode: 0,
               message: "Promotion updated successfully!"

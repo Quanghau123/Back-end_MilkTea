@@ -29,13 +29,11 @@ module.exports = function (sequelize, DataTypes) {
           foreignKey: 'CategoryId',
           onDelete: 'SET NULL'
         });
-        Product.hasMany(models.Review, {
-          foreignKey: "ProductId",
-          onDelete: "CASCADE"
+        Product.hasMany(models.CartItem, {
+          foreignKey: 'ProductId'
         });
-        Product.hasMany(models.Order, {
-          foreignKey: "ProductId",
-          onDelete: "CASCADE"
+        Product.hasMany(models.OrderItem, {
+          foreignKey: 'ProductId'
         });
       }
     }]);
@@ -64,9 +62,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 0
-    },
-    Size: {
-      type: DataTypes.STRING
     },
     Description: {
       type: DataTypes.TEXT

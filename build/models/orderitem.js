@@ -16,40 +16,39 @@ function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf 
 var _require = require('sequelize'),
   Model = _require.Model;
 module.exports = function (sequelize, DataTypes) {
-  var Test = /*#__PURE__*/function (_Model) {
-    function Test() {
-      _classCallCheck(this, Test);
-      return _callSuper(this, Test, arguments);
+  var OrderItem = /*#__PURE__*/function (_Model) {
+    function OrderItem() {
+      _classCallCheck(this, OrderItem);
+      return _callSuper(this, OrderItem, arguments);
     }
-    _inherits(Test, _Model);
-    return _createClass(Test, null, [{
+    _inherits(OrderItem, _Model);
+    return _createClass(OrderItem, null, [{
       key: "associate",
-      value: function associate(models) {}
+      value: function associate(models) {
+        OrderItem.belongsTo(models.Order, {
+          foreignKey: 'OrderId'
+        });
+        OrderItem.belongsTo(models.Product, {
+          foreignKey: 'ProductId'
+        });
+      }
     }]);
   }(Model);
-  Test.init({
-    TestId: {
-      allowNull: false,
-      autoIncrement: true,
+  OrderItem.init({
+    OrderItemId: {
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      autoIncrement: true
     },
-    TestName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    TestAge: {
-      type: DataTypes.STRING
-    },
-    TestAdd: {
-      type: DataTypes.STRING,
-      allowNull: false
-    }
+    OrderId: DataTypes.INTEGER,
+    ProductId: DataTypes.INTEGER,
+    Quantity: DataTypes.INTEGER,
+    UnitPrice: DataTypes.FLOAT
   }, {
     sequelize: sequelize,
-    modelName: 'Test',
-    tableName: 'Tests',
+    modelName: 'OrderItem',
+    tableName: 'OrderItems',
     timestamps: true
   });
-  return Test;
+  return OrderItem;
 };

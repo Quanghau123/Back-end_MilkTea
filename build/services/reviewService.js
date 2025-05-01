@@ -19,7 +19,13 @@ var getAllReviews = function getAllReviews() {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _index["default"].Review.findAll();
+            return _index["default"].Review.findAll({
+              include: [{
+                model: _index["default"].User,
+                attributes: ['UserName']
+              }],
+              raw: true
+            });
           case 3:
             reviews = _context.sent;
             resolve(reviews);

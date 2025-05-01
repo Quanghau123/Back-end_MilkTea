@@ -75,51 +75,90 @@ var getPromotionDetailById = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
-var createPromotionDetail = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(data) {
+var getPromotionDetailsByPromotionId = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(promotionId) {
+    var details;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          _context3.prev = 0;
-          _context3.next = 3;
+          _context3.next = 2;
+          return _index["default"].PromotionDetail.findOne({
+            where: {
+              PromotionId: promotionId
+            },
+            include: [{
+              model: _index["default"].Promotion,
+              attributes: ['StartDate', 'EndDate', 'Title', 'Scription', 'ImageURL']
+            }],
+            raw: true
+          });
+        case 2:
+          details = _context3.sent;
+          if (details) {
+            _context3.next = 5;
+            break;
+          }
+          throw {
+            errCode: 1,
+            errMessage: "No promotion details found for the given PromotionId"
+          };
+        case 5:
+          return _context3.abrupt("return", details);
+        case 6:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3);
+  }));
+  return function getPromotionDetailsByPromotionId(_x2) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+var createPromotionDetail = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(data) {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.prev = 0;
+          _context4.next = 3;
           return _index["default"].PromotionDetail.create(data);
         case 3:
-          return _context3.abrupt("return", {
+          return _context4.abrupt("return", {
             errCode: 0,
             message: "Promotion detail created successfully!"
           });
         case 6:
-          _context3.prev = 6;
-          _context3.t0 = _context3["catch"](0);
-          throw _context3.t0;
+          _context4.prev = 6;
+          _context4.t0 = _context4["catch"](0);
+          throw _context4.t0;
         case 9:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3, null, [[0, 6]]);
+    }, _callee4, null, [[0, 6]]);
   }));
-  return function createPromotionDetail(_x2) {
-    return _ref3.apply(this, arguments);
+  return function createPromotionDetail(_x3) {
+    return _ref4.apply(this, arguments);
   };
 }();
 var updatePromotionDetail = function updatePromotionDetail(data) {
   return new Promise(/*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(resolve, reject) {
+    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(resolve, reject) {
       var detail;
-      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
+      return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
           case 0:
-            _context4.prev = 0;
+            _context5.prev = 0;
             if (data.DetailId) {
-              _context4.next = 3;
+              _context5.next = 3;
               break;
             }
-            return _context4.abrupt("return", resolve({
+            return _context5.abrupt("return", resolve({
               errCode: 1,
               errMessage: "Missing DetailId"
             }));
           case 3:
-            _context4.next = 5;
+            _context5.next = 5;
             return _index["default"].PromotionDetail.findOne({
               where: {
                 DetailId: data.DetailId
@@ -127,12 +166,12 @@ var updatePromotionDetail = function updatePromotionDetail(data) {
               raw: false
             });
           case 5:
-            detail = _context4.sent;
+            detail = _context5.sent;
             if (detail) {
-              _context4.next = 8;
+              _context5.next = 8;
               break;
             }
-            return _context4.abrupt("return", resolve({
+            return _context5.abrupt("return", resolve({
               errCode: 2,
               errMessage: "Promotion detail not found"
             }));
@@ -141,82 +180,83 @@ var updatePromotionDetail = function updatePromotionDetail(data) {
             Object.keys(data).forEach(function (key) {
               if (key !== "DetailId") detail[key] = data[key];
             });
-            _context4.next = 11;
+            _context5.next = 11;
             return detail.save();
           case 11:
             resolve({
               errCode: 0,
               message: "Promotion detail updated successfully!"
             });
-            _context4.next = 17;
+            _context5.next = 17;
             break;
           case 14:
-            _context4.prev = 14;
-            _context4.t0 = _context4["catch"](0);
-            reject(_context4.t0);
+            _context5.prev = 14;
+            _context5.t0 = _context5["catch"](0);
+            reject(_context5.t0);
           case 17:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
-      }, _callee4, null, [[0, 14]]);
+      }, _callee5, null, [[0, 14]]);
     }));
-    return function (_x3, _x4) {
-      return _ref4.apply(this, arguments);
+    return function (_x4, _x5) {
+      return _ref5.apply(this, arguments);
     };
   }());
 };
 var deletePromotionDetail = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(id) {
+  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(id) {
     var detail;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
         case 0:
-          _context5.prev = 0;
-          _context5.next = 3;
+          _context6.prev = 0;
+          _context6.next = 3;
           return _index["default"].PromotionDetail.findOne({
             where: {
               DetailId: id
             }
           });
         case 3:
-          detail = _context5.sent;
+          detail = _context6.sent;
           if (detail) {
-            _context5.next = 6;
+            _context6.next = 6;
             break;
           }
-          return _context5.abrupt("return", {
+          return _context6.abrupt("return", {
             errCode: 1,
             errMessage: "Promotion detail not found"
           });
         case 6:
-          _context5.next = 8;
+          _context6.next = 8;
           return _index["default"].PromotionDetail.destroy({
             where: {
               DetailId: id
             }
           });
         case 8:
-          return _context5.abrupt("return", {
+          return _context6.abrupt("return", {
             errCode: 0,
             message: "Promotion detail deleted successfully!"
           });
         case 11:
-          _context5.prev = 11;
-          _context5.t0 = _context5["catch"](0);
-          throw _context5.t0;
+          _context6.prev = 11;
+          _context6.t0 = _context6["catch"](0);
+          throw _context6.t0;
         case 14:
         case "end":
-          return _context5.stop();
+          return _context6.stop();
       }
-    }, _callee5, null, [[0, 11]]);
+    }, _callee6, null, [[0, 11]]);
   }));
-  return function deletePromotionDetail(_x5) {
-    return _ref5.apply(this, arguments);
+  return function deletePromotionDetail(_x6) {
+    return _ref6.apply(this, arguments);
   };
 }();
 var _default = exports["default"] = {
   getAllPromotionDetails: getAllPromotionDetails,
   getPromotionDetailById: getPromotionDetailById,
+  getPromotionDetailsByPromotionId: getPromotionDetailsByPromotionId,
   createPromotionDetail: createPromotionDetail,
   updatePromotionDetail: updatePromotionDetail,
   deletePromotionDetail: deletePromotionDetail

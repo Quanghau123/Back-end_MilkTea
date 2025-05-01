@@ -83,37 +83,44 @@ var getOrderById = function getOrderById(id) {
     };
   }());
 };
-var createNewOrder = function createNewOrder(data) {
-  return new Promise(/*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(resolve, reject) {
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
-          case 0:
-            _context3.prev = 0;
-            _context3.next = 3;
-            return _index["default"].Order.create(data);
-          case 3:
-            resolve({
-              errCode: 0,
-              message: "Order created successfully!"
-            });
-            _context3.next = 9;
+var getOrdersByUserId = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(userId) {
+    var orders;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          if (userId) {
+            _context3.next = 2;
             break;
-          case 6:
-            _context3.prev = 6;
-            _context3.t0 = _context3["catch"](0);
-            reject(_context3.t0);
-          case 9:
-          case "end":
-            return _context3.stop();
-        }
-      }, _callee3, null, [[0, 6]]);
-    }));
-    return function (_x5, _x6) {
-      return _ref3.apply(this, arguments);
-    };
-  }());
-};
+          }
+          throw new Error("Missing userId");
+        case 2:
+          _context3.next = 4;
+          return _index["default"].Order.findAll({
+            where: {
+              UserId: userId
+            },
+            include: [{
+              model: _index["default"].OrderItem,
+              include: [{
+                model: _index["default"].Product
+              }]
+            }],
+            raw: true
+          });
+        case 4:
+          orders = _context3.sent;
+          return _context3.abrupt("return", orders);
+        case 6:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3);
+  }));
+  return function getOrdersByUserId(_x5) {
+    return _ref3.apply(this, arguments);
+  };
+}();
 var updateOrder = function updateOrder(data) {
   return new Promise(/*#__PURE__*/function () {
     var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(resolve, reject) {
@@ -171,7 +178,7 @@ var updateOrder = function updateOrder(data) {
         }
       }, _callee4, null, [[0, 14]]);
     }));
-    return function (_x7, _x8) {
+    return function (_x6, _x7) {
       return _ref4.apply(this, arguments);
     };
   }());
@@ -216,7 +223,8 @@ var deleteOrder = /*#__PURE__*/function () {
           _context5.t0 = _context5["catch"](0);
           return _context5.abrupt("return", {
             errCode: 500,
-            errMessage: _context5.t0.message
+            errMessage: "Internal server error",
+            error: _context5.t0.message
           });
         case 14:
         case "end":
@@ -224,14 +232,105 @@ var deleteOrder = /*#__PURE__*/function () {
       }
     }, _callee5, null, [[0, 11]]);
   }));
-  return function deleteOrder(_x9) {
+  return function deleteOrder(_x8) {
     return _ref5.apply(this, arguments);
+  };
+}();
+var createOrderFromCart = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(userId) {
+    var shippingInfo,
+      cartItems,
+      totalAmount,
+      order,
+      orderItems,
+      _args6 = arguments;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
+        case 0:
+          shippingInfo = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : null;
+          if (userId) {
+            _context6.next = 3;
+            break;
+          }
+          throw new Error("Missing UserId");
+        case 3:
+          _context6.next = 5;
+          return _index["default"].CartItem.findAll({
+            where: {
+              UserId: userId
+            },
+            include: [{
+              model: _index["default"].Product,
+              attributes: ['Price']
+            }],
+            raw: true,
+            nest: true
+          });
+        case 5:
+          cartItems = _context6.sent;
+          if (cartItems.length) {
+            _context6.next = 8;
+            break;
+          }
+          throw new Error("Cart is empty");
+        case 8:
+          // Tính tổng tiền
+          totalAmount = 0;
+          cartItems.forEach(function (item) {
+            totalAmount += item.Quantity * item.Product.Price;
+          });
+
+          // Tạo Order
+          _context6.next = 12;
+          return _index["default"].Order.create({
+            UserId: userId,
+            TotalAmount: totalAmount,
+            Status: 'pending',
+            // hoặc 'new'
+            ShippingAddress: (shippingInfo === null || shippingInfo === void 0 ? void 0 : shippingInfo.address) || null,
+            ShippingPhone: (shippingInfo === null || shippingInfo === void 0 ? void 0 : shippingInfo.phone) || null
+          });
+        case 12:
+          order = _context6.sent;
+          // Tạo OrderItems
+          orderItems = cartItems.map(function (item) {
+            return {
+              OrderId: order.OrderId,
+              ProductId: item.ProductId,
+              Quantity: item.Quantity,
+              UnitPrice: item.Product.Price
+            };
+          });
+          _context6.next = 16;
+          return _index["default"].OrderItem.bulkCreate(orderItems);
+        case 16:
+          _context6.next = 18;
+          return _index["default"].CartItem.destroy({
+            where: {
+              UserId: userId
+            }
+          });
+        case 18:
+          return _context6.abrupt("return", {
+            errCode: 0,
+            message: "Order created successfully!",
+            orderId: order.OrderId
+          });
+        case 19:
+        case "end":
+          return _context6.stop();
+      }
+    }, _callee6);
+  }));
+  return function createOrderFromCart(_x9) {
+    return _ref6.apply(this, arguments);
   };
 }();
 var _default = exports["default"] = {
   getAllOrders: getAllOrders,
   getOrderById: getOrderById,
-  createNewOrder: createNewOrder,
+  getOrdersByUserId: getOrdersByUserId,
   updateOrder: updateOrder,
-  deleteOrder: deleteOrder
+  deleteOrder: deleteOrder,
+  createOrderFromCart: createOrderFromCart
 };

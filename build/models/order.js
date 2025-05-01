@@ -26,57 +26,32 @@ module.exports = function (sequelize, DataTypes) {
       key: "associate",
       value: function associate(models) {
         Order.belongsTo(models.User, {
-          foreignKey: 'UserId',
-          onDelete: 'SET NULL'
+          foreignKey: 'UserId'
         });
-        Order.belongsTo(models.Product, {
-          foreignKey: 'ProductId',
-          onDelete: 'SET NULL'
+        Order.hasMany(models.OrderItem, {
+          foreignKey: 'OrderId'
         });
         Order.hasOne(models.Payment, {
-          foreignKey: 'OrderId',
-          onDelete: 'CASCADE'
+          foreignKey: 'OrderId'
         });
       }
     }]);
   }(Model);
   Order.init({
     OrderId: {
-      allowNull: false,
-      autoIncrement: true,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      autoIncrement: true
     },
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'UserId'
-      },
-      onDelete: 'CASCADE'
+    UserId: DataTypes.INTEGER,
+    OrderDate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     },
-    ProductId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Products',
-        key: 'ProductId'
-      },
-      onDelete: 'CASCADE'
-    },
-    Quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1,
-      validate: {
-        min: 1
-      }
-    },
-    TotalAmount: {
-      type: DataTypes.FLOAT,
-      allowNull: false
-    }
+    ShippingAddress: DataTypes.STRING,
+    ShippingPhone: DataTypes.STRING,
+    TotalAmount: DataTypes.FLOAT,
+    Status: DataTypes.STRING // pending, paid, shipped, canceled
   }, {
     sequelize: sequelize,
     modelName: 'Order',

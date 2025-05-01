@@ -80,209 +80,288 @@ var handleGetPaymentById = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
-var handleCreateNewPayment = /*#__PURE__*/function () {
+var handleGetPaymentsByUserId = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var response;
+    var userId, response;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           _context3.prev = 0;
-          _context3.next = 3;
-          return _paymentService["default"].createNewPayment(req.body);
-        case 3:
+          userId = req.params.userId;
+          if (userId) {
+            _context3.next = 4;
+            break;
+          }
+          return _context3.abrupt("return", res.status(400).json({
+            errCode: 1,
+            errMessage: "Missing userId parameter"
+          }));
+        case 4:
+          _context3.next = 6;
+          return _paymentService["default"].getPaymentsByUserId(userId);
+        case 6:
           response = _context3.sent;
-          return _context3.abrupt("return", res.status(200).json(response));
-        case 7:
-          _context3.prev = 7;
-          _context3.t0 = _context3["catch"](0);
-          return _context3.abrupt("return", res.status(_context3.t0.errCode || 500).json(_context3.t0));
+          return _context3.abrupt("return", res.status(response.errCode === 0 ? 200 : 404).json(response));
         case 10:
+          _context3.prev = 10;
+          _context3.t0 = _context3["catch"](0);
+          return _context3.abrupt("return", res.status(500).json({
+            errCode: 500,
+            errMessage: _context3.t0.message
+          }));
+        case 13:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 10]]);
   }));
-  return function handleCreateNewPayment(_x5, _x6) {
+  return function handleGetPaymentsByUserId(_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
-var handleUpdatePayment = /*#__PURE__*/function () {
+var handleSearchPaymentsByUserInfo = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var response;
+    var keyword, response;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           _context4.prev = 0;
-          _context4.next = 3;
-          return _paymentService["default"].updatePayment(req.body);
-        case 3:
-          response = _context4.sent;
-          return _context4.abrupt("return", res.status(200).json(response));
-        case 7:
-          _context4.prev = 7;
-          _context4.t0 = _context4["catch"](0);
-          return _context4.abrupt("return", res.status(_context4.t0.errCode || 500).json(_context4.t0));
-        case 10:
-        case "end":
-          return _context4.stop();
-      }
-    }, _callee4, null, [[0, 7]]);
-  }));
-  return function handleUpdatePayment(_x7, _x8) {
-    return _ref4.apply(this, arguments);
-  };
-}();
-var handleDeletePayment = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var paymentId, response;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) switch (_context5.prev = _context5.next) {
-        case 0:
-          paymentId = req.params.id;
-          if (paymentId) {
-            _context5.next = 3;
+          keyword = req.query.keyword;
+          if (keyword) {
+            _context4.next = 4;
             break;
           }
-          return _context5.abrupt("return", res.status(400).json({
+          return _context4.abrupt("return", res.status(400).json({
             errCode: 1,
-            errMessage: "Missing required parameter"
+            errMessage: "Missing search keyword"
           }));
-        case 3:
-          _context5.prev = 3;
-          _context5.next = 6;
-          return _paymentService["default"].deletePayment(paymentId);
+        case 4:
+          _context4.next = 6;
+          return _paymentService["default"].searchPaymentsByUserInfo(keyword);
         case 6:
-          response = _context5.sent;
-          return _context5.abrupt("return", res.status(response.errCode === 0 ? 200 : 400).json(response));
+          response = _context4.sent;
+          return _context4.abrupt("return", res.status(response.errCode === 0 ? 200 : 404).json(response));
         case 10:
-          _context5.prev = 10;
-          _context5.t0 = _context5["catch"](3);
-          return _context5.abrupt("return", res.status(500).json({
+          _context4.prev = 10;
+          _context4.t0 = _context4["catch"](0);
+          return _context4.abrupt("return", res.status(500).json({
             errCode: 500,
-            errMessage: "Internal server error",
-            error: _context5.t0.message
+            errMessage: _context4.t0.message
           }));
         case 13:
         case "end":
+          return _context4.stop();
+      }
+    }, _callee4, null, [[0, 10]]);
+  }));
+  return function handleSearchPaymentsByUserInfo(_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+var handleCreateNewPayment = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var response;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.prev = 0;
+          _context5.next = 3;
+          return _paymentService["default"].createNewPayment(req.body);
+        case 3:
+          response = _context5.sent;
+          return _context5.abrupt("return", res.status(200).json(response));
+        case 7:
+          _context5.prev = 7;
+          _context5.t0 = _context5["catch"](0);
+          return _context5.abrupt("return", res.status(_context5.t0.errCode || 500).json(_context5.t0));
+        case 10:
+        case "end":
           return _context5.stop();
       }
-    }, _callee5, null, [[3, 10]]);
+    }, _callee5, null, [[0, 7]]);
   }));
-  return function handleDeletePayment(_x9, _x10) {
+  return function handleCreateNewPayment(_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
-var handleProcessMomoPayment = /*#__PURE__*/function () {
+var handleUpdatePayment = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var _req$body, UserId, BookTourId, result;
+    var response;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
           _context6.prev = 0;
-          _req$body = req.body, UserId = _req$body.UserId, BookTourId = _req$body.BookTourId;
-          if (!(!UserId || !BookTourId)) {
-            _context6.next = 4;
+          _context6.next = 3;
+          return _paymentService["default"].updatePayment(req.body);
+        case 3:
+          response = _context6.sent;
+          return _context6.abrupt("return", res.status(200).json(response));
+        case 7:
+          _context6.prev = 7;
+          _context6.t0 = _context6["catch"](0);
+          return _context6.abrupt("return", res.status(_context6.t0.errCode || 500).json(_context6.t0));
+        case 10:
+        case "end":
+          return _context6.stop();
+      }
+    }, _callee6, null, [[0, 7]]);
+  }));
+  return function handleUpdatePayment(_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+var handleDeletePayment = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+    var paymentId, response;
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) switch (_context7.prev = _context7.next) {
+        case 0:
+          paymentId = req.params.id;
+          if (paymentId) {
+            _context7.next = 3;
             break;
           }
-          return _context6.abrupt("return", res.status(400).json({
+          return _context7.abrupt("return", res.status(400).json({
+            errCode: 1,
+            errMessage: "Missing required parameter"
+          }));
+        case 3:
+          _context7.prev = 3;
+          _context7.next = 6;
+          return _paymentService["default"].deletePayment(paymentId);
+        case 6:
+          response = _context7.sent;
+          return _context7.abrupt("return", res.status(response.errCode === 0 ? 200 : 400).json(response));
+        case 10:
+          _context7.prev = 10;
+          _context7.t0 = _context7["catch"](3);
+          return _context7.abrupt("return", res.status(500).json({
+            errCode: 500,
+            errMessage: "Internal server error",
+            error: _context7.t0.message
+          }));
+        case 13:
+        case "end":
+          return _context7.stop();
+      }
+    }, _callee7, null, [[3, 10]]);
+  }));
+  return function handleDeletePayment(_x13, _x14) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+var handleProcessMomoPayment = /*#__PURE__*/function () {
+  var _ref8 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var _req$body, UserId, OrderId, result;
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) switch (_context8.prev = _context8.next) {
+        case 0:
+          _context8.prev = 0;
+          _req$body = req.body, UserId = _req$body.UserId, OrderId = _req$body.OrderId;
+          if (!(!UserId || !OrderId)) {
+            _context8.next = 4;
+            break;
+          }
+          return _context8.abrupt("return", res.status(400).json({
             errCode: 1,
             errMessage: "Thiếu thông tin thanh toán"
           }));
         case 4:
-          _context6.next = 6;
-          return _paymentService["default"].processMomoPayment(UserId, BookTourId);
+          _context8.next = 6;
+          return _paymentService["default"].processMomoPayment(UserId, OrderId);
         case 6:
-          result = _context6.sent;
-          return _context6.abrupt("return", res.status(200).json(result));
+          result = _context8.sent;
+          return _context8.abrupt("return", res.status(200).json(result));
         case 10:
-          _context6.prev = 10;
-          _context6.t0 = _context6["catch"](0);
-          return _context6.abrupt("return", res.status(500).json({
+          _context8.prev = 10;
+          _context8.t0 = _context8["catch"](0);
+          return _context8.abrupt("return", res.status(500).json({
             errCode: -1,
-            errMessage: _context6.t0.message
+            errMessage: _context8.t0.message
           }));
         case 13:
         case "end":
-          return _context6.stop();
+          return _context8.stop();
       }
-    }, _callee6, null, [[0, 10]]);
+    }, _callee8, null, [[0, 10]]);
   }));
-  return function handleProcessMomoPayment(_x11, _x12) {
-    return _ref6.apply(this, arguments);
+  return function handleProcessMomoPayment(_x15, _x16) {
+    return _ref8.apply(this, arguments);
   };
 }();
 var handleMomoIPN = /*#__PURE__*/function () {
-  var _ref7 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
-    var _req$body2, orderId, resultCode, payment;
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-      while (1) switch (_context7.prev = _context7.next) {
+  var _ref9 = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+    var _req$body2, transactionId, resultCode, payment, result, _result;
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+      while (1) switch (_context9.prev = _context9.next) {
         case 0:
-          _context7.prev = 0;
-          _req$body2 = req.body, orderId = _req$body2.orderId, resultCode = _req$body2.resultCode;
-          if (orderId) {
-            _context7.next = 4;
+          _context9.prev = 0;
+          _req$body2 = req.body, transactionId = _req$body2.transactionId, resultCode = _req$body2.resultCode;
+          if (transactionId) {
+            _context9.next = 5;
             break;
           }
-          return _context7.abrupt("return", res.status(400).json({
+          console.warn("[handleMomoIPN] Thiếu transactionId!");
+          return _context9.abrupt("return", res.status(400).json({
             errCode: 1,
-            errMessage: "Thiếu orderId"
+            errMessage: "Thiếu TransactionId"
           }));
-        case 4:
-          _context7.next = 6;
-          return _paymentService["default"].getPaymentByTransactionId(orderId);
-        case 6:
-          payment = _context7.sent;
+        case 5:
+          _context9.next = 7;
+          return _paymentService["default"].getPaymentByTransactionId(transactionId);
+        case 7:
+          payment = _context9.sent;
           if (payment) {
-            _context7.next = 9;
+            _context9.next = 11;
             break;
           }
-          return _context7.abrupt("return", res.status(404).json({
+          console.warn("[handleMomoIPN] Không tìm thấy giao dịch:", transactionId);
+          return _context9.abrupt("return", res.status(404).json({
             errCode: 2,
             errMessage: "Không tìm thấy giao dịch"
           }));
-        case 9:
+        case 11:
           if (!(resultCode === 0)) {
-            _context7.next = 15;
+            _context9.next = 18;
             break;
           }
-          _context7.next = 12;
-          return _paymentService["default"].updatePayment({
-            PaymentId: payment.PaymentId,
-            PaymentStatus: true
-          });
-        case 12:
-          return _context7.abrupt("return", res.status(200).json({
-            errCode: 0,
-            message: "Thanh toán thành công!"
-          }));
-        case 15:
-          return _context7.abrupt("return", res.status(400).json({
-            errCode: 3,
-            errMessage: "Thanh toán thất bại"
-          }));
-        case 16:
-          _context7.next = 21;
-          break;
+          _context9.next = 14;
+          return _paymentService["default"].updatePaymentStatusByTransactionId(transactionId, true);
+        case 14:
+          result = _context9.sent;
+          return _context9.abrupt("return", res.status(200).json(result));
         case 18:
-          _context7.prev = 18;
-          _context7.t0 = _context7["catch"](0);
-          return _context7.abrupt("return", res.status(500).json({
+          _context9.next = 20;
+          return _paymentService["default"].updatePaymentStatusByTransactionId(transactionId, false);
+        case 20:
+          _result = _context9.sent;
+          return _context9.abrupt("return", res.status(200).json(_result));
+        case 22:
+          _context9.next = 28;
+          break;
+        case 24:
+          _context9.prev = 24;
+          _context9.t0 = _context9["catch"](0);
+          console.error("[handleMomoIPN] Lỗi:", _context9.t0);
+          return _context9.abrupt("return", res.status(500).json({
             errCode: -1,
-            errMessage: _context7.t0.message
+            errMessage: _context9.t0.message
           }));
-        case 21:
+        case 28:
         case "end":
-          return _context7.stop();
+          return _context9.stop();
       }
-    }, _callee7, null, [[0, 18]]);
+    }, _callee9, null, [[0, 24]]);
   }));
-  return function handleMomoIPN(_x13, _x14) {
-    return _ref7.apply(this, arguments);
+  return function handleMomoIPN(_x17, _x18) {
+    return _ref9.apply(this, arguments);
   };
 }();
 var _default = exports["default"] = {
   handleGetAllPayments: handleGetAllPayments,
   handleGetPaymentById: handleGetPaymentById,
+  handleGetPaymentsByUserId: handleGetPaymentsByUserId,
+  handleSearchPaymentsByUserInfo: handleSearchPaymentsByUserInfo,
   handleCreateNewPayment: handleCreateNewPayment,
   handleUpdatePayment: handleUpdatePayment,
   handleDeletePayment: handleDeletePayment,

@@ -66,7 +66,7 @@ var handleUserLogin = function handleUserLogin(email, password) {
           case 7:
             _context2.next = 9;
             return _index["default"].User.findOne({
-              attributes: ['Email', 'Role', 'UserPassword'],
+              attributes: ['Email', 'Role', 'UserPassword', 'UserName', 'Phone', 'Address', 'UserId'],
               where: {
                 Email: email
               },
@@ -99,24 +99,23 @@ var handleUserLogin = function handleUserLogin(email, password) {
             }, secretKey, {
               expiresIn: tokenExpiry
             });
-            console.log("Generated Token:", token);
             delete user.UserPassword;
             userData.errCode = 0;
             userData.errMessage = 'OK';
             userData.user = user;
             userData.token = token;
             resolve(userData);
-            _context2.next = 28;
+            _context2.next = 27;
             break;
-          case 25:
-            _context2.prev = 25;
+          case 24:
+            _context2.prev = 24;
             _context2.t0 = _context2["catch"](0);
             reject(_context2.t0);
-          case 28:
+          case 27:
           case "end":
             return _context2.stop();
         }
-      }, _callee2, null, [[0, 25]]);
+      }, _callee2, null, [[0, 24]]);
     }));
     return function (_x2, _x3) {
       return _ref2.apply(this, arguments);

@@ -16,27 +16,30 @@ module.exports = {
             hashPassword = bcrypt.hashSync('123456', salt);
             _context.next = 4;
             return queryInterface.bulkInsert('Users', [{
-              UserName: 'admin',
+              UserName: 'Admin',
               UserPassword: hashPassword,
               Email: 'admin@gmail.com',
               Phone: '0123456789',
               Role: 'admin',
+              Addresss: "123 Nguyen Van Bao, Go Vap, Ho Chi Minh",
               createdAt: new Date(),
               updatedAt: new Date()
             }, {
-              UserName: 'user1',
+              UserName: 'Quang Hau',
               UserPassword: hashPassword,
-              Email: 'user1@gmail.com',
+              Email: 'quanghau@gmail.com',
               Phone: '0987654321',
               Role: 'user',
+              Addresss: "456 Le Thi Hong, Go Vap, Ho Chi Minh",
               createdAt: new Date(),
               updatedAt: new Date()
             }, {
-              UserName: 'user2',
+              UserName: 'De Vuong',
               UserPassword: hashPassword,
-              Email: 'user2@gmail.com',
-              Phone: '0989855521',
+              Email: 'devuong@gmail.com',
+              Phone: '0989855562',
               Role: 'user',
+              Addresss: "789 Pham Van Chieu, Go Vap, Ho Chi Minh",
               createdAt: new Date(),
               updatedAt: new Date()
             }]);

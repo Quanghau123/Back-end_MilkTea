@@ -18,15 +18,6 @@ module.exports = {
                 autoIncrement: true,
                 allowNull: false
               },
-              ProductId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                references: {
-                  model: 'Products',
-                  key: 'ProductId'
-                },
-                onDelete: 'CASCADE'
-              },
               UserId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,

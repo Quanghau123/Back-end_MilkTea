@@ -11,28 +11,42 @@ module.exports = {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return queryInterface.bulkInsert('Tours', [{
-              TourName: 'Ha Long Bay Adventure',
-              CategoryName: 'Nature',
-              TourLocation: 'Ha Long',
-              TourTime: 3,
-              TourPrice: 1000000,
-              TourDifficulty: 'Easy',
-              TourMinAge: 12,
-              DescribeTour: 'A wonderful trip to Ha Long Bay.',
-              createdAt: new Date(),
-              updatedAt: new Date()
+            return queryInterface.bulkInsert('Promotions', [{
+              StartDate: '2025-05-01',
+              EndDate: '2025-05-15',
+              Title: 'Mua 1 Tặng 1 Trà Sữa',
+              Scription: 'Mua bất kỳ trà sữa size lớn sẽ được tặng thêm 1 ly size nhỏ miễn phí.',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/Promotion/Promotion1.jpeg'
             }, {
-              TourName: 'Phong Nha Cave',
-              CategoryName: 'Nature',
-              TourLocation: 'Quang Binh',
-              TourTime: 5,
-              TourPrice: 2000000,
-              TourDifficulty: 'Medium',
-              TourMinAge: 20,
-              DescribeTour: 'A wonderful trip to Quang Binh.',
-              createdAt: new Date(),
-              updatedAt: new Date()
+              StartDate: '2025-06-01',
+              EndDate: '2025-06-07',
+              Title: 'Giảm 20% Toàn Bộ Menu',
+              Scription: 'Ưu đãi đặc biệt nhân ngày Quốc tế thiếu nhi!',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/Promotion/Promotion2.jpeg'
+            }, {
+              StartDate: '2025-05-10',
+              EndDate: '2025-05-20',
+              Title: 'Combo Trà Sữa và Snack',
+              Scription: 'Chỉ với 49K cho 1 trà sữa bất kỳ kèm 1 snack ngon giòn.',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/Promotion/Promotion3.jpeg'
+            }, {
+              StartDate: '2025-05-15',
+              EndDate: '2025-05-31',
+              Title: 'Free Size Up',
+              Scription: 'Gọi size nhỏ, uống size lớn miễn phí suốt tháng 5!',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/Promotion/Promotion4.jpeg'
+            }, {
+              StartDate: '2025-07-01',
+              EndDate: '2025-07-31',
+              Title: 'Thành Viên Vàng - Giảm 30%',
+              Scription: 'Thành viên Vàng được giảm ngay 30% tất cả các đơn hàng.',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/Promotion/Promotion5.jpeg'
+            }, {
+              StartDate: '2025-08-15',
+              EndDate: '2025-08-20',
+              Title: 'Ngày Hội Trà Sữa',
+              Scription: 'Tham gia sự kiện nhận nhiều quà tặng hấp dẫn và thưởng thức trà sữa miễn phí!',
+              ImageURL: 'https://raw.githubusercontent.com/Quanghau123/Front-end_MilkTea/master/src/assets/Promotion/Promotion6.jpeg'
             }]);
           case 2:
           case "end":
@@ -51,7 +65,7 @@ module.exports = {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return queryInterface.bulkDelete('Tours', null, {});
+            return queryInterface.bulkDelete('Promotions', null, {});
           case 2:
           case "end":
             return _context2.stop();
