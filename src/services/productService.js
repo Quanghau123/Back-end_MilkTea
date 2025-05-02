@@ -1,10 +1,20 @@
 import db from "@models/index.js";
 
-let getAllProducts = () => {
+let getAllProducts = (page = 1, limit = 10) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let products = await db.Product.findAll();
-            resolve(products);
+            let offset = (page - 1) * limit;
+            let { count, rows } = await db.Product.findAndCountAll({
+                offset: offset,
+                limit: limit
+            });
+
+            resolve({
+                total: count,
+                totalPages: Math.ceil(count / limit),
+                currentPage: page,
+                products: rows
+            });
         } catch (e) {
             reject(e);
         }

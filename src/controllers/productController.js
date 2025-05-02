@@ -2,11 +2,14 @@ import ProductService from "@services/productService.js";
 
 let handleGetAllProducts = async (req, res) => {
     try {
-        let products = await ProductService.getAllProducts();
+        let page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 10;
+
+        let result = await ProductService.getAllProducts(page, limit);
         return res.status(200).json({
             errCode: 0,
             errMessage: "OK",
-            products
+            ...result
         });
     } catch (e) {
         return res.status(500).json({

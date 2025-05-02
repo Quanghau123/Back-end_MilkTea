@@ -49,7 +49,7 @@ let updatePromotion = (data) => {
 
             let promotion = await db.Promotion.findOne({
                 where: { PromotionId: data.PromotionId },
-                raw: false // Đảm bảo nhận được một instance Sequelize
+                raw: false 
             });
 
             if (!promotion) {
